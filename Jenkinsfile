@@ -1,38 +1,20 @@
 pipeline {
     agent any
-        environment {
-        MAVEN_VERSION = '3.8.6'
-        MAVEN_HOME = "${WORKSPACE}/maven"
-    }
-
-    stages {
-        stage('Install Maven') {
+        stages {
+        stage('Checkout Code') {
             steps {
-                script {
-                    if (!fileExists("${MAVEN_HOME}/bin/mvn")) {
-                        bat """
-                        echo Downloading Maven ${MAVEN_VERSION}
-                        wget https://downloads.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip
-
-                        echo Extracting Maven
-                        PowerShell -Command "Expand-Archive -Path 'apache-maven-${MAVEN_VERSION}-bin.zip' -DestinationPath '.'"
-
-                        echo Moving Maven folder
-                        move apache-maven-${MAVEN_VERSION} maven
-                        """
-                    }
-                }
+                // Clone the repository from Git
+                git url: 'https://github.com/Rajkumarjayampu/sampletest.git', branch: 'main'
             }
         }
-
+        
         stage('Build') {
             steps {
-                bat "${MAVEN_HOME}/bin/mvn clean install"
+                // Compile the project using Maven
+                bat 'mvn clean install'
             }
         }
-
-
-
+   
 
 
         stage('Test') {
