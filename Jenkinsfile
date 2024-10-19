@@ -12,21 +12,21 @@ pipeline {
         stage('Build') {
             steps {
                 // Compile the project using Maven
-                sh 'mvn clean install'
+                bat 'mvn clean install'
             }
         }
 
         stage('Test') {
             steps {
                 // Run unit tests
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
                 // Package the application
-                sh 'mvn package'
+                bat 'mvn package'
             }
         }
         
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh 'docker build -t myapp:latest .'
+                    bat 'docker build -t myapp:latest .'
                 }
             }
         }
@@ -44,9 +44,9 @@ pipeline {
                 script {
                     // Push Docker image to Docker Hub
                     withCredentials([string(credentialsId: 'dockerhub-credentials', variable: 'DOCKER_HUB_PASSWORD')]) {
-                        sh 'docker login -u rajkumarjayampu -p Rajkumar@113'
-                        sh 'docker tag myapp:latest rajkumarjayampu/myapp:latest'
-                        sh 'docker push rajkumarjayampu/myapp:latest'
+                        bat 'docker login -u rajkumarjayampu -p Rajkumar@113'
+                        bat 'docker tag myapp:latest rajkumarjayampu/myapp:latest'
+                        bat 'docker push rajkumarjayampu/myapp:latest'
                     }
                 }
             }
@@ -56,7 +56,7 @@ pipeline {
             steps {
                 script {
                     // Deploy the Docker container
-                    sh 'docker run -d -p 8080:8080 rajkumarjayampu/myapp:latest'
+                    bat 'docker run -d -p 8080:8080 rajkumarjayampu/myapp:latest'
                 }
             }
         }
