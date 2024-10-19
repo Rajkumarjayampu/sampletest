@@ -1,7 +1,5 @@
 pipeline {
     agent any
-
-
         environment {
         MAVEN_VERSION = '3.8.6'
         MAVEN_HOME = "${WORKSPACE}/maven"
@@ -11,15 +9,14 @@ pipeline {
         stage('Install Maven') {
             steps {
                 script {
-                    // Download and install Maven if not present
                     if (!fileExists("${MAVEN_HOME}/bin/mvn")) {
                         bat """
                         echo Downloading Maven ${MAVEN_VERSION}
-                        curl -O https://downloads.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip
-                        
+                        wget https://downloads.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip
+
                         echo Extracting Maven
                         PowerShell -Command "Expand-Archive -Path 'apache-maven-${MAVEN_VERSION}-bin.zip' -DestinationPath '.'"
-                        
+
                         echo Moving Maven folder
                         move apache-maven-${MAVEN_VERSION} maven
                         """
@@ -34,9 +31,8 @@ pipeline {
             }
         }
 
- 
-    
-    
+
+
 
 
         stage('Test') {
