@@ -28,7 +28,7 @@ pipeline {
                 bat "${MAVEN_HOME}/bin/mvn clean install"
             }
         }
-    }
+    
     
 
 
